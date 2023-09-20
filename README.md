@@ -1,1 +1,1 @@
-# tup-lc2-votacion-app.
+# tup-lc2-votacion-app
