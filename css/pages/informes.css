@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(240, 240, 240);
+}
+
+.container {
+    display: flex;
+}
+
+.paso-div,
+.generales-div {
+    flex: 1;
+    width: 50%;
+    margin: 0;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    background-color: blue;
+}
+
+.paso-div {
+    background-color: rgb(255, 0, 191);
+}
+
+.nombre {
+    color: white;
+    margin-left: 20px;
+}
+
+.imagen {
+    margin-right: 20px;
+}
+
+.nombre a {
+    text-decoration: none;
+    color: white;
+}
+
+.div-derecho svg,
+.div-izquierdo svg {
+    font-size: 70px;
+    height: 70px;
+    width: 70px;
+}
