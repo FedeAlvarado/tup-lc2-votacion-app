@@ -8,41 +8,9 @@
     <link rel="shortcut icon" type="image/png" href="img/icons/favicon-16x16.png">
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/pages/index.css">
     <style>
-        .header-page {
-            background-color: #18a0fb;
-        }
 
-        .logo {
-            padding: 5px;
-            margin: 10px;
-            width: 200px;
-        }
-
-        .menu {
-            padding: 5px;
-            background-color: #333;
-            display: flex;
-            flex-direction: row-reverse;
-
-        }
-
-        .info {
-            background-color: #333;
-            border: 2px solid rgba(255, 255, 255, 0.89);
-            border-radius: 20px;
-            padding-right: 10px;
-            padding-left: 10px;
-            font-size: 16px;
-            color: white;
-            text-decoration: none;
-
-        }
-
-        ul {
-            list-style: none;
-
-        }
     </style>
 
 </head>
@@ -56,7 +24,16 @@
         <!--Barra de menú principal-->
         <div class="menu">
             <ul>
-                <li><a class="info" href="informes.html">INFORMES</a></li>
+                <div>
+                    <li><a class="info" href="informes.html">INFORMES</a></li>
+                </div>
+                <div class="div-main-g">
+                    <li><a class="menu-generales" href="generales.html">Generales</a></li>
+                </div>
+                <div>
+                    <li><a class="menu-paso" href="paso.html">Paso</a></li>
+                </div>
+
 
             </ul>
         </div>
@@ -66,20 +43,24 @@
     <main>
         <section id="sec-titulo">
             <!--Seccion para agregar una palicula favorita por codigo-->
-            <h2>Resultados electorales</h2>
-            <p>
-                La Dirección Nacional Electoral y el Observatorio Político Electoral del Ministerio
-                del Interior ponen a disposición una herramienta de búsqueda avanzada y generación
-                de informes personalizados con los resultados provisionales de las elecciones
-                desarrolladas en los últimos años.
-            </p>
-            <p>
-                Los resultados que se presentan son los correspondientes a escrutinios provisorios de
-                elecciones nacionales. Dicho recuento es responsabilidad de la DINE. También se
-                presentan los resultados provisionales de las elecciones provinciales y/o locales
-                realizados bajo la adhesión a ley de simultaneidad.
-            </p>
-            <div>Imagen</div>
+            <div class="resultado">
+                <h2>Resultados electorales</h2>
+                <p>
+                    La Dirección Nacional Electoral y el Observatorio Político Electoral del Ministerio
+                    del Interior ponen a disposición una herramienta de búsqueda avanzada y generación
+                    de informes personalizados con los resultados provisionales de las elecciones
+                    desarrolladas en los últimos años.
+                </p>
+                <p>
+                    Los resultados que se presentan son los correspondientes a escrutinios provisorios de
+                    elecciones nacionales. Dicho recuento es responsabilidad de la DINE. También se
+                    presentan los resultados provisionales de las elecciones provinciales y/o locales
+                    realizados bajo la adhesión a ley de simultaneidad.
+                </p>
+            </div>
+            <div class="imagen-resultado">
+                <img class="imagen-datos" src="img/icons/images.png" alt="datos">
+            </div>
         </section>
         <section id="sec-contenido">
             <div>
@@ -89,9 +70,8 @@
             <div class="paso">
 
                 <!--URNA-->
-                <div class="container">
+                <div class="container-urnas">
                     <div class="paso-div" style="background-color: rgb(255, 0, 191);">
-                        <h2><a href="paso.html">PASO</a></h2>
                         <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="841.889px"
                             height="595.281px" viewBox="0 0 841.889 595.281" enable-background="new 0 0 841.889 595.281"
@@ -110,10 +90,12 @@
                                 </path>
                             </g>
                         </svg>
+                        <h2><a class="boton-paso" href="paso.html">Paso</a></h2>
+
                     </div>
-                    <div class="generales-div" style="background-color: blue;">
-                        <h2><a href="generales.html">GENERALES</a></h2>
-                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                    <div class="generales-div" style="background-color: skyblue">
+                        <div>
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="841.889px"
                             height="595.281px" viewBox="0 0 841.889 595.281" enable-background="new 0 0 841.889 595.281"
                             xml:space="preserve" class="v-icon__component theme--light"
@@ -131,7 +113,12 @@
                                 </path>
                             </g>
                         </svg>
-                    </div>
+                        </div>
+                            <div>
+                                <h2 ><a class="boton-generales" href="generales.html">Generales</a></h2>
+                    
+                            </div>
+                        </div>
                 </div>
     </main>
     <!--Pie de página-->
