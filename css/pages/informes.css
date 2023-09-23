@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+@import '/css/common.css';
 
 * {
   font-family: 'Roboto', sans-serif;
@@ -11,46 +12,227 @@ body {
   background-color: rgb(240, 240, 240);
 }
 
-.container {
-    display: flex;
+.header-menu {
+    background-color: var(--fondo-Menu);
+    padding: 5px;
 }
 
-.paso-div,
-.generales-div {
-    flex: 1;
-    width: 50%;
-    margin: 0;
-    padding: 2px;
-    box-sizing: border-box;
-    border-radius: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    display: flex;
+.header-menu ul {
     align-items: center;
-    background-color: blue;
+    justify-items: end;
+    display: grid;
+    grid-template-columns: repeat(3, auto) 1fr;
 }
 
-.paso-div {
-    background-color: rgb(255, 0, 191);
-}
-
-.nombre {
+.header-menu li p {
     color: white;
-    margin-left: 20px;
+    margin-right: 15px;
 }
 
-.imagen {
-    margin-right: 20px;
+.header-menu ul li {
+    list-style-type: none;
+    display: inline-flex;
+    justify-content: center;
 }
 
-.nombre a {
+.header-menu ul li a {
     text-decoration: none;
     color: white;
+    font-size: 12px;
 }
 
-.div-derecho svg,
-.div-izquierdo svg {
-    font-size: 70px;
+.nav-generales {
+    background-color: var(--celeste);
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+    margin-right: 15px;
+    width: 100px;
+}
+
+.nav-generales:hover {
+    background-color: var(--gris-claro);
+}
+
+.nav-paso {
+    background-color: var(--magenta);
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+    margin-right: 15px;
+    width: 100px;
+}
+
+.nav-paso:hover {
+    background-color: var(--gris-claro);
+}
+
+.inicio {
+    margin-right: 30px;
+    background-color: var(--gris-claro);
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+    width: 100px;
+}
+
+.inicio a:hover {
+    color: var(--textos);
+}
+#sec-messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.message {
+    color: white;
+    display: inline-flex;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 10px;
+    width: 400px;
+    justify-content: center;
+    align-items: center;
+}
+
+.message p {
+    font-weight: 100;
+    font-style: italic;
+    color: white;
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+.green {
+    background-color: var(--mensaje-usuario-verde);
+}
+
+.red {
+    background-color: var(--mensaje-usuario-rojo);
+}
+
+.yellow {
+    background-color: var(--mensaje-usuario-amarillo);
+}
+
+.sec-titulo h1{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.container {
+    width: 1024px;
+    border: solid 1px var(--borde-Grilla);
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 0px auto 50px auto;
+    background-color: rgb(250, 250, 250);
+}
+
+.informes {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grid:hover {
+    background-color: black;
+}
+
+th {
+    text-align: center;
+    color: var(--titulo-Grilla);
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--borde-inferior-Grilla);
+}
+
+td {
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid var(--borde-inferior-Grilla);
+    padding: 15px 0px;
+    font-size: 12px;
+}
+
+.eleccion,
+.datos-generales,
+.datos-por-agrupacion {
+    vertical-align: top;
+}
+
+.grid-colum {
+    display: flex;
+    justify-content: center;
+}
+
+.provincia svg {
+    width: 250px;
+}
+
+.eleccion .grid-colum {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100px;
+    line-height: 15px;    
+}
+
+.subtitulo-elecciones {
+    font-size: 12px;
+    color: var(--textos);
+    font-weight: bold;
+}
+
+.recorrido-links {
+    font-size: 11px;
+    color: var(--celeste);
+}
+
+.datos-generales .grid-colum * {
+    border-radius: 5px;
+    margin: 2px;
     height: 70px;
-    width: 70px;
+    width: 120px;
+    font-size: 10px;
+    color: #FFF;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 5px;
+    align-items: center;
+}
+
+.grid-colum * .texto-recuadro * {
+    display: contents;
+}
+
+.mesas {
+    background-color: var(--celeste);
+}
+
+.electores {
+    background-color: var(--magenta);
+}
+
+.participacion-escrutado {
+    background-color: var(--morado);
+}
+
+.datos-por-agrupacion .grid-colum {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    overflow-y: auto;
+    height: 325px;
+    padding: 5px;
+    font-size: 10px;
+    color: var(--textos);
+}
+
+.partidos {
+    font-weight: bold;
+    line-height: 50px;
+}
+
+.votos div {
+    padding: 15px 0px 0px 15px;
 }
