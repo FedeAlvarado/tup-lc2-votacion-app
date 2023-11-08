@@ -105,6 +105,14 @@
 
 }
 
+.boton-paso{
+  background-color: magenta;
+  padding: 10px 28px;
+  margin-right: 15px;
+  border-radius: 10px;
+
+}
+
 .carteles div {
   width: 400px;
   margin: 20px auto;
