@@ -12,7 +12,8 @@ if(url.substring(url.lastIndexOf("/") + 1) == "paso.html"){
 //Seleccionamos los elementos del DOM
 const añoSelect = document.getElementById("añoSelect");
 const cargoSelect = document.getElementById("cargoSelect");
-
+const distritoSelect = document.getElementById("distritoSelect");
+const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
 
 //Funciones
 
@@ -102,19 +103,80 @@ const cambiarCargos = async (cargos) => {
 }
 
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL CARGO
+var cargoSeleccionado
 
 cargoSelect.addEventListener("change", async () => {
     const cargoId = cargoSelect.value;
     console.log(dataCargos)
     
-    const cargoSeleccionado = dataCargos.find((cargo) => {
+    cargoSeleccionado = dataCargos.find((cargo) => {
         if(cargo.IdCargo == cargoId){
             return cargo
         }
     })
     console.log(cargoSeleccionado)
+    cambiarDistritos(cargoSeleccionado.Distritos)
     
 })
 
 
 // COMBO DISTRITO --------------------------------------------
+
+
+const cambiarDistritos = async (distritos) => {
+    distritoSelect.innerHTML = "Seleccione un distrito"; // Eliminamos todos los option anteriores
+    distritos.forEach((distrito) => {
+        const option = document.createElement("option");
+        option.value = distrito.IdDistrito;
+        option.text = distrito.Distrito;
+        distritoSelect.add(option);
+    });
+}
+
+//FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL DISTRITO
+var distritoSeleccionado
+
+distritoSelect.addEventListener("change", async () => {
+    const distritoId = distritoSelect.value;
+    seccionSelect.innerHTML = "";
+    buscarSecciones();
+    distritoSeleccionado = cargoSeleccionado.Distritos.find((distrito) => {
+        if(distrito.IdDistrito == distritoId){
+            return distrito
+        }
+    })
+    
+    console.log(distritoSeleccionado)
+    
+})
+
+
+// COMBO SECCION --------------------------------------------
+
+
+const buscarSecciones = async () => {
+    seccionSelect.innerHTML = "";
+    const cargo = dataCargos.find((c) => {
+        if(c.IdCargo == cargoSelect.value){
+            return c
+        }
+    })
+    const distrito = cargo.Distritos.find((d) => {
+        if(d.IdDistrito == distritoSelect.value){
+            return d
+        }
+    })
+    distrito.SeccionesProvinciales.forEach((seccion) => {
+        hdSeccionProvincial.value = seccion.IDSeccionProvincial;
+        seccion.Secciones.forEach((seccion) => {
+            const option = document.createElement("option");
+            option.value = seccion.IdSeccion;
+            option.text = seccion.Seccion;
+            seccionSelect.add(option);
+        });
+    });
+
+    
+}
+// ...
+
