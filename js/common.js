@@ -15,6 +15,10 @@ const cargoSelect = document.getElementById("cargoSelect");
 const distritoSelect = document.getElementById("distritoSelect");
 const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
 
+const defaultOption = document.createElement("option");
+    defaultOption.value = false;
+    defaultOption.text = "Seleccione un cargo";
+
 //Funciones
 
 const agregarOpciones =async (elemento, func) =>{
@@ -66,7 +70,7 @@ const buscarDatos = async (periodoSelect) =>{
 
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL AÑO
 
-añoSelect.addEventListener("change",async () => {
+añoSelect.addEventListener("click",async () => {
     const datos = await buscarDatos(añoSelect.value);
     
     // Guardar los datos filtrados en una variable
@@ -94,6 +98,9 @@ const filtrarCargos = async (datos) => {
 }
 
 const cambiarCargos = async (cargos) => {
+    cargoSelect.innerHTML = ""; // Eliminamos todos los option anteriores
+    
+    cargoSelect.add(defaultOption);
     cargos.forEach((cargo) => {
         const option = document.createElement("option");
         option.value = cargo.IdCargo;
@@ -105,19 +112,23 @@ const cambiarCargos = async (cargos) => {
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL CARGO
 var cargoSeleccionado
 
-cargoSelect.addEventListener("change", async () => {
+cargoSelect.addEventListener("click", async () => {
     const cargoId = cargoSelect.value;
-    console.log(dataCargos)
-    
-    cargoSeleccionado = dataCargos.find((cargo) => {
-        if(cargo.IdCargo == cargoId){
-            return cargo
-        }
-    })
-    console.log(cargoSeleccionado)
-    cambiarDistritos(cargoSeleccionado.Distritos)
-    
+    console.log(cargoId)
+    if(cargoSelect.value >= 0){
+        cargoSeleccionado = dataCargos.find((cargo) => {
+            if(cargo.IdCargo == cargoId){
+                return cargo
+            }
+        })
+        console.log(cargoSeleccionado)
+        
+        cambiarDistritos(cargoSeleccionado.Distritos)
+    }else{
+        cambiarDistritos(false)
+    }
 })
+
 
 
 // COMBO DISTRITO --------------------------------------------
@@ -125,26 +136,34 @@ cargoSelect.addEventListener("change", async () => {
 
 const cambiarDistritos = async (distritos) => {
     distritoSelect.innerHTML = "Seleccione un distrito"; // Eliminamos todos los option anteriores
-    distritos.forEach((distrito) => {
-        const option = document.createElement("option");
-        option.value = distrito.IdDistrito;
-        option.text = distrito.Distrito;
-        distritoSelect.add(option);
-    });
+    if(distritos){
+        distritos.forEach((distrito) => {
+            const option = document.createElement("option");
+            option.value = distrito.IdDistrito;
+            option.text = distrito.Distrito;
+            distritoSelect.add(option);
+        });
+    }else{
+        distritoSelect.add(defaultOption); // Agregamos el option por defecto
+    }
+    
 }
 
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL DISTRITO
 var distritoSeleccionado
 
-distritoSelect.addEventListener("change", async () => {
+distritoSelect.addEventListener("click", async () => {
     const distritoId = distritoSelect.value;
-    seccionSelect.innerHTML = "";
+    seccionSelect.innerHTML = "Seleccione una sección";
+    if(distritoId >= 0){
+        distritoSeleccionado = cargoSeleccionado.Distritos.find((distrito) => {
+            if(distrito.IdDistrito == distritoId){
+                return distrito
+            }
+        })
+    }
     buscarSecciones();
-    distritoSeleccionado = cargoSeleccionado.Distritos.find((distrito) => {
-        if(distrito.IdDistrito == distritoId){
-            return distrito
-        }
-    })
+    
     
     console.log(distritoSeleccionado)
     
@@ -155,7 +174,7 @@ distritoSelect.addEventListener("change", async () => {
 
 
 const buscarSecciones = async () => {
-    seccionSelect.innerHTML = "";
+    seccionSelect.innerHTML = "Seleccione una sección";
     const cargo = dataCargos.find((c) => {
         if(c.IdCargo == cargoSelect.value){
             return c
@@ -166,17 +185,82 @@ const buscarSecciones = async () => {
             return d
         }
     })
-    distrito.SeccionesProvinciales.forEach((seccion) => {
-        hdSeccionProvincial.value = seccion.IDSeccionProvincial;
-        seccion.Secciones.forEach((seccion) => {
-            const option = document.createElement("option");
-            option.value = seccion.IdSeccion;
-            option.text = seccion.Seccion;
-            seccionSelect.add(option);
-        });
-    });
-
-    
+    if(distrito && cargo){
+        if(distrito.SeccionesProvinciales[0].Secciones[0].IdSeccion !== null){
+            distrito.SeccionesProvinciales.forEach((seccion) => {
+                hdSeccionProvincial.value = seccion.IDSeccionProvincial;
+                seccion.Secciones.forEach((seccion) => {
+                    const option = document.createElement("option");
+                    option.value = seccion.IdSeccion;
+                    option.text = seccion.Seccion;
+                    seccionSelect.add(option);
+                });
+            });
+        }else{
+            console.log("HOLA")
+            seccionSelect.add(defaultOption);
+        }
+    }
 }
 // ...
 
+
+// VALIDATION FUNCTION
+const validateFields = () => {
+    let isValid = true;
+    const fields = [
+        { element: añoSelect, name: "Año" },
+        { element: cargoSelect, name: "Cargo" },
+        { element: distritoSelect, name: "Distrito" },
+        { element: seccionSelect, name: "Sección" },
+    ];
+
+    fields.forEach((field) => {
+        if (!field.element.value || field.element.value === "Seleccione un distrito" || field.element.value === "Seleccione una sección" || field.element.value === "Seleccione un cargo" || field.element.value === "Año") {
+            isValid = false;
+            field.element.style.borderColor = "yellow";
+            const message = document.createElement("p");
+            message.style.color = "yellow";
+            message.textContent = `Por favor seleccione un ${field.name}`;
+            field.element.parentNode.insertBefore(message, field.element.nextSibling);
+        } else {
+            field.element.style.borderColor = "";
+            const message = field.element.nextSibling;
+            if (message) {
+                message.remove();
+            }
+        }
+    });
+
+    return isValid;
+};
+
+// FILTER FUNCTION
+const filtrar = async () => {
+    try {
+        if (!validateFields()) {
+            return;
+        }
+        console.log(cargoSelect.value)
+        const anioEleccion = añoSelect.value;
+        const categoriaId = cargoSelect.value;
+        const distritoId = distritoSelect.value;
+        const seccionProvincialId = hdSeccionProvincial.value;
+        const seccionId = seccionSelect.value;
+        const circuitoId = "";
+        const mesaId = "";
+
+        const url = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${anioEleccion}&tipoRecuento=${tipoRecuento}&tipoEleccion=${tipoEleccion}&categoriaId=${categoriaId}&distritoId=${distritoId}&seccionProvincialId=${seccionProvincialId}&seccionId=${seccionId}&circuitoId=${circuitoId}&mesaId=${mesaId}`;
+        console.log(url);
+
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+
+        // process data...
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// ...
