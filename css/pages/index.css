@@ -1,13 +1,13 @@
 .menu-paso {
     background-color: magenta;
-    border: 2px solid rgba(255, 255, 255, 0.89);
     border-radius: 5px;
-    padding: 5px;
     font-size: 16px;
     text-transform: uppercase;
     font-family: sans-serif;
     text-align: center;
     text-decoration: none;
+    padding: 10px 45px;
+    
 
 }
 
@@ -17,9 +17,9 @@ li a:hover {
 
 .menu-generales {
     background-color: skyblue;
-    border: 2px solid rgba(255, 255, 255, 0.89);
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px 25px;
+    
     font-size: 16px;
     font-family: #fff;
     text-align: center;
@@ -32,9 +32,15 @@ li a:hover {
     flex-direction: row;
     flex-wrap: nowrap;
     align-content: normal;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+}
 
+.container-urnas div h2 a{
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    font-weight: lighter;
 }
 
 .header-page {
@@ -63,14 +69,13 @@ li a:hover {
 }
 
 .info {
-    background-color: #333;
     border: 1px solid rgba(255, 255, 255, 0.89);
-    border-radius: 15px;
-    padding-right: 10px;
-    padding-left: 10px;
+    border-radius: 25px;
+    padding: 10px 35px;
     font-size: 16px;
     color: white;
     text-decoration: none;
+    
 
 }
 
@@ -83,7 +88,11 @@ ul {
     justify-content: flex-start;
     padding: 10px;
 }
-
+ul li{
+    color: white;
+    text-decoration: none;
+    margin: auto 5px;
+}
 
 .imagen-datos {
     margin: 15px;
@@ -95,23 +104,25 @@ ul {
 #sec-titulo {
     display: flex;
     flex-direction: row;
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 150px;
+    margin-right: 150px;
     justify-content: space-between;
 
 }
 
 .resultado {
     margin: 20px;
-    width: 500px;
+    width: 60%;
     height: 100px;
+}
+.titulo-elecciones{
+    margin-left: 170px;
 }
 
 .paso-div,
 .generales-div {
     width: 400px;
     height: 100px;
-    border: 10px;
     margin: 25px;
     border-radius: 10px;
     display: flex;
@@ -123,10 +134,10 @@ ul {
     text-decoration: none;
 }
 
-.boton-generales {
+ul li a {
     color: white;
-
-
+    text-decoration: none;
+    font-weight: 15px;
 }
 
 .boton-generales a:visited {
@@ -134,10 +145,4 @@ ul {
 
 }
 
-.boton-paso:visited {
-    color: white;
-}
 
-a {
-    text-decoration: none;
-}

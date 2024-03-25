@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/common.css" />
+    
   </head>
 
   <body>
@@ -28,18 +29,19 @@
         /></a>
       </div>
       <!--Barra de menú principal-->
-      <div class="menu">
-        <ul>
-          <li class="menu_op"><select><option>Año</option></select></li>
+      
+        <ul class="menu">
+          <li class="menu_op"><select id="añoSelect"><option>Año</option></select></li>
           <li class="menu_op"><select><option>Cargo</option></select></li>
           <li class="menu_op"><select><option>Distrito</option></select></li>
           <li ><button id="filtrar">
             <img src="https://img.icons8.com/?size=1x&id=132&format=png" height="15" alt="" srcset="">
             FILTRAR</button></li>
+            <li class="boton-generales menu_op"><a href="generales.html">GENERALES</a></li>
           <li class=" boton-informes menu_op" ><a href="informes.html">INFORMES</a></li>
           <li class="boton-inicio menu_op"><a href="index.html">INICIO</a></li>
         </ul>
-      </div>
+      
     </header>
     <!-- Contenido principal de la página -->
     <main>
@@ -231,6 +233,7 @@
             <a href="about:blank">Términos y condiciones.</a>
         </p>
     </footer>
-    
+    <script src="js/common.js"></script>
+    <script src="js/pages/paso.js"></script>
   </body>
 </html>
