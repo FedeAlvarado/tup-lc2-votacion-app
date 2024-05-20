@@ -31,6 +31,9 @@ const tipoRecuento = 1;
 var tipoEleccion = 0;
 url = window.location.href;
 
+const contenedorBarras = document.getElementById("barras");
+let html = "";
+
 var cartelAmarillo = document.getElementById("amarillo")
 var cartelVerde = document.getElementById("verde")
 var section = document.getElementById("sec-messages")
@@ -41,6 +44,25 @@ if(url.substring(url.lastIndexOf("/") + 1) == "paso.html"){
 }else if(url.substring(url.lastIndexOf("/") + 1) == "generales.html"){
     tipoEleccion = 2;
 }
+
+const coloresAgrupacionesPoliticas = {
+    "134": {
+        colorLiviano: 'rgba(0, 169, 232, 0.3)',
+        colorPleno: 'rgb(0, 169, 232);'
+    },
+    "135": {
+        colorPleno: 'rgb(112, 76, 159)',
+        colorLiviano: 'rgba(112, 76, 159, 0.5)'
+    },
+    "132": {
+        colorPleno: 'rgb(252, 210, 0)',
+        colorLiviano: 'rgba(252, 210, 0, 0.3)'
+    },
+    "gris": {
+        colorPleno: 'rgb(128, 128, 128)',
+        colorLiviano: 'rgb(128, 128, 128, 0.5)'
+    }
+};
 
 //Seleccionamos los elementos del DOM
 const añoSelect = document.getElementById("añoSelect");
@@ -365,66 +387,134 @@ function cambioHTML(data){
 }
 
 
-function agregarInforme(){
+async function consultarResultados() {
+    let cargoTxt = cargosSelect.options[cargosSelect.selectedIndex].innerText; //obtener el texto del campo cargo
+    let distritoTxt = distritoSelect.options[distritoSelect.selectedIndex].innerText; //obtener el texto del campo distrito
+    let seccionTxt = seccionSelect.options[seccionSelect.selectedIndex].innerText; //obtener el texto del campo sección
+    const anioEleccion = periodosSelect.value; // Valor seleccionado en el select de año
+    const categoriaId = cargosSelect.value; // Valor seleccionado en el select de cargo
+    const distritoId = distritoSelect.value; // Valor seleccionado en el select de distrito
+    let seccionProvincialId = hdSeccionProvincial.value;
+    if (seccionProvincialId == "undefined") {
+        seccionProvincialId = "";
+    };
+    const seccionId = seccionSelect.value;
+    const circuitoId = ""; // Valor por defecto
+    const mesaId = ""; // Valor por defecto
 
-    var vAnio= añoSelect.value;
-    var vTipoRecuento= tipoRecuento;
-    var vTipoEleccion
-    if (tipoEleccion == 1){
-        vTipoEleccion = "PASO"
-    }else if(tipoEleccion == 2){
-        vTipoEleccion = "Generales"
+    // Validar que todos los campos estén completos
+    if (
+        anioEleccion === "0" ||
+        categoriaId === "0" ||
+        distritoId === "0" ||
+        seccionProvincialId === "0" ||
+        seccionId === "0"
+    ) {
+        mostrarMensajeAmarillo("Por favor, complete todos los campos de selección")
+        return;
     }
-    var vCategoriaId= cargoSelect.value;
-    var vDistritoId= distritoSelect.value;
-    var vSeccionProvincialId= hdSeccionProvincial.value;
-    if (vSeccionProvincialId === "undefined") {
-        vSeccionProvincialId = "";
-    };
-    var vSeccionId= seccionSelect.value;
-    var vMesasEscrutadas= cantMesas.textContent;
-    var vParticipacion= participacion.textContent;
-    var vCantElectores= cantElectores.textContent;
-    var vNombreAgrupaciones = []
-    var vVotosAgrupaciones = []
-    var vporcentajesAgrupaciones = []
 
-    data.valoresTotalizadosPositivos.forEach((agrupacion) => {
-        vNombreAgrupaciones.push(agrupacion.nombreAgrupacion);
-        vVotosAgrupaciones.push(agrupacion.votos);
-        vporcentajesAgrupaciones.push(agrupacion.votosPorcentaje);
-    })
-    var values = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistritoId, vSeccionProvincialId, vSeccionId, vMesasEscrutadas, vParticipacion, vCantElectores, vNombreAgrupaciones, vVotosAgrupaciones, vporcentajesAgrupaciones]
-    var key = "INFORMES"
+    try {
+        const url = "https://resultados.mininterior.gob.ar/api/resultados/getResultados";
+        const queryParams = `?anioEleccion=${anioEleccion}&tipoRecuento=${tipoRecuento}&tipoEleccion=${tipoEleccion}&categoriaId=${categoriaId}&distritoId=${distritoId}&seccionProvincialId=${seccionProvincialId}&seccionId=${seccionId}&circuitoId=${circuitoId}&mesaId=${mesaId}`;
+        console.log(url + queryParams);
+        const response = await fetch(url + queryParams);
+        datos = await response.json();
+        console.log(datos.estadoRecuento.mesasTotalizadas);
+        cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId);
+    } catch (error) {
+        //mostrarMensajeRojo("Error. Error al obtener resultados de la API.");
+        //limpiarCombos();
+    }
+}
 
-    console.log(values)
+//Funcion cargar datos es llamada dentro de consultarResultados una vez obtuvimos resultado de la api.
+function cargarDatosHTML(datos, anioEleccion, tipoEleccion, cargoTxt, distritoTxt, seccionTxt, distritoId) {
 
-    var storedData = localStorage.getItem(key);
-
-    if (storedData != null) {
-        var existingData = JSON.parse(storedData);
-
-        var entryExists = existingData.some(entry =>{
-            return JSON.stringify(entry) === JSON.stringify(values);
-        });
-
-        if (entryExists) {
-            section.style.display = "block";
-            cartelAmarillo.style.display = "block";
-        } else {
-            existingData.push(values);
-
-            localStorage.setItem(key, JSON.stringify(existingData));
-            section.style.display = "block";
-            cartelVerde.style.display = "block";
-        }
+    //Crea titulo y subtitulo
+    contenedorTitulo = document.getElementById("sec-titulo");
+    contenedorTitulo.style.display = "flex";
+    if (tipoEleccion == 2) {
+        tipoEleccion = "Generales"
     } else {
-        if (vAnio != 0) {
-            localStorage.setItem(key, JSON.stringify([values]));
-            section.style.display = "block";
-            cartelVerde.style.display = "block";
-        }
-    };
+        tipoEleccion = "Paso"
+    }
+    titulo = document.getElementById("titulo");
+    titulo.innerHTML = `Elecciones ${anioEleccion} | ${tipoEleccion}`
+
+    subTitulo = document.getElementById("texto-path");
+    subTitulo.innerHTML = `${anioEleccion} > ${tipoEleccion} > ${cargoTxt} > ${distritoTxt} > ${seccionTxt}`
+
+    //Habilita la seccion de contenido
+    contenedorContenido = document.getElementById("sec-contenido");
+    contenedorContenido.style.display = "block";
+
+    //Completa los cuadros de colores
+    mesas = document.getElementById("mesas-escrutadas");
+    electores = document.getElementById("electores");
+    participacion = document.getElementById("participacion");
+    mesas.innerHTML = datos.estadoRecuento.mesasTotalizadas
+    electores.innerHTML = datos.estadoRecuento.cantidadElectores
+    participacion.innerHTML = `${datos.estadoRecuento.participacionPorcentaje}%`;
+
+    //Completa el cuadro mapas
+    tituloRecuadroProv = document.getElementById("tit-rec-prov");
+    tituloRecuadroProv.innerHTML = `${distritoTxt}`;
+    mapa = document.getElementById("provincia");
+    mapa.innerHTML = mapasProv[distritoId];
+
+
+    //Barras horizontales
+    const contenedorBarras = document.getElementById("barras");
+    let html = "";
+
+    if (tipoEleccion == "Paso") {
+        armarBarrasPaso();
+    } else {
+        datos.valoresTotalizadosPositivos.forEach((agrupacion) => {
+            if (coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)) {
+                html += `
+                <div class="progress-container">
+                    <div class="progress-titulo">
+                        <h4>${agrupacion.nombreAgrupacion}</h4>
+                        <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
+                    </div>
+                    <div class="progress" style="background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorLiviano};">
+                        <div class="progress-bar" style="width: ${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorPleno};">
+                            <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                        </div>
+                    </div>
+                </div>`;
+            } else {
+                html += `
+                <div class="progress-container">
+                    <div class="progress-titulo">
+                        <h4>${agrupacion.nombreAgrupacion}</h4>
+                        <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
+                    </div>
+                    <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
+                        <div class="progress-bar" style="width:${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
+                            <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                        </div>
+                    </div>
+                </div>`;
+            }
+        });
+        contenedorBarras.innerHTML = html;
+    }
+
+    //Grafico de barras
+    const contenedorBarrasVerticales = document.getElementById("grid");
+    html = "";
+    for (let index = 0; index < 8; index++) {
+        if (coloresAgrupacionesPoliticas.hasOwnProperty(datos.valoresTotalizadosPositivos[index].idAgrupacion)) {
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas[datos.valoresTotalizadosPositivos[index].idAgrupacion].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
+        } else {
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno}; --bar-value:${datos.valoresTotalizadosPositivos[index].votosPorcentaje}%;" data-name="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}" title="${datos.valoresTotalizadosPositivos[index].nombreAgrupacion}85%"></div>`;
+        };
+        contenedorBarrasVerticales.innerHTML = html;
+    }
+    
     limpiar()
     titulo.innerHTML = "Elecciones | ";
     path.innerHTML = "";
