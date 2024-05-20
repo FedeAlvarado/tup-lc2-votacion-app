@@ -64,29 +64,29 @@
     </header>
     <!-- Contenido principal de la página -->
     <main>
-      <section id="sec-messages">
-        <div class="green message">
+      <section id="sec-messages" style="display: none;">
+        <div class="green message" style="display: none;" id="verde">
             <i class="fa-solid fa-thumbs-up"></i>
             <p>Se agregó con éxito el resultado al informe</p>
         </div>
-        <div class="red message">
+        <div class="red message" style="display: none;" id="red">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <p>Error.Se produjo un error al intentar agregar resultados al informe</p>
         </div>
-        <div class="yellow message">
+        <div class="yellow message" style="display: none;" id="amarillo">
             <i class="fa-solid fa-exclamation"></i>
-            <p>La operación no se pudo completar</p>
+            <p>Este informe ya a sido agregado!</p>
         </div>
     </section>
-      <section class="titulo">
-        <h1>Elecciones 2021 | Generales</h1>
-        <p class="texto-path">
-          2020 > Generales > Provisorio > Senadores Nacionales > Neuquen
+      <section >
+        <h1 id="titulo"></h1>
+        <p id="path" style="color: #ddd900;">
+          Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR
         </p>
       </section>
       <section class="main">
         <main>
-          <button class="agregar-informe-boton">+ AGREGAR A INFORME</button>
+          <button id="informe-button" class="agregar-informe-boton">+ AGREGAR A INFORME</button>
           <div class="main-cards">
             <div class="card">
               <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -107,7 +107,7 @@
               </svg>
               <div>
                 <p>Mesas Escrutadas</p>
-                <p>62.71%</p>
+                <p id="cantMesasEscrutadas"></p>
               </div>
             </div>
             <div class="card">
@@ -129,7 +129,7 @@
               </svg>
               <div>
                 <p>Electores</p>
-                <p>62.71%</p>
+                <p id="cantElectores"></p>
               </div>
             </div>
             <div class="card">
@@ -151,7 +151,7 @@
               </svg>
               <div>
                 <p>Participacion sobre escrutado</p>
-                <p>62.71%</p>
+                <p id="participacion"></p>
               </div>
             </div>
           </div>
@@ -210,17 +210,8 @@
           </div>
         </div>
         <div class="mapa">
-          <h3>Neuquen</h3>
-          <svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb"
-            stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M178 122L185 112L197 109L192
-            101L192 69L180 63L175 63L174 60L169 56L165 57L158 54L157 48L149 40L147 37L147 33L145
-            34L143 32L143 27L142 29L140 28L137 31L136 36L132 35L132 37L128 39L129 44L126 43L127
-            45L125 48L127 51L125 51L127 58L124 61L124 64L127 66L124 72L129 84L129 93L133 96L133
-            99L130 103L119 108L121 116L117 126L119 126L118 129L113 127L113 131L116 136L114 142L111
-            142L110 146L114 149L114 151L110 153L110 158L107 162L110 166L109 169L116 171L117 170L123
-            173L126 171L129 167L127 162L130 159L137 157L139 155L143 156L148 154L148 152L151 151L153
-            139L167 131L172 125L175 125L177 122z"></path></svg>
+          <h3 id="tituloProvincia"></h3>
+          <svg id="mapaProvincia"></svg>
         </div>
         <div class="chart-wrap horizontal">
           <div class="title">Resumen de votos</div>
