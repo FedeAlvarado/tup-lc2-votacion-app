@@ -35,7 +35,7 @@
         <section id="sec-messages">
             <div class="green message">
                 <i class="fa-solid fa-thumbs-up"></i>
-                <p>Se agregó con éxito!</p>
+                <p>Hay informes listos para mostrar!</p>
             </div>
             <div class="red message">
                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -43,7 +43,7 @@
             </div>
             <div class="yellow message">
                 <i class="fa-solid fa-exclamation"></i>
-                <p>No se pudo completar!</p>
+                <p>No hay informes guardados para mostrar</p>
             </div>
         </section>
         <section id="sec-contenido">
@@ -539,6 +539,48 @@
                                 </div>
                             </div>
                         </td>
+                        <section id="informes-section">
+                            <div id="informes-container">
+                                <!-- Aquí se mostrarán los informes -->
+                            </div>
+                        </section>
+                        <section class="sec-titulo">
+                            <h1>Reporte de elecciones</h1>
+                        </section>
+                        <section id="sec-messages">
+                            <div class="green message">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <p>Se agregó con éxito!</p>
+                            </div>
+                            <div class="red message">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <p>Error!</p>
+                            </div>
+                            <div class="yellow message">
+                                <i class="fa-solid fa-exclamation"></i>
+                                <p>No se pudo completar!</p>
+                            </div>
+                        </section>
+                        <section id="informes-section">
+                            <div id="informes-container">
+                                <!-- Aquí se mostrarán los informes -->
+                                <table id="informes-table" border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>Título</th>
+                                            <th>Subtítulo</th>
+                                            <th>Mesas Escrutadas</th>
+                                            <th>Electores</th>
+                                            <th>Participación</th>
+                                            <th>Datos por Agrupación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Filas de informes dinámicamente generadas -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
                     </tr>
                 </table>
             </div>
@@ -557,6 +599,10 @@
             <a href="about:blank">Términos y condiciones.</a>
         </p>
     </footer>
+
+    <script src="./js/common.js"></script>
+    <script src="./js/pages/informes.js"></script>
+
 </body>
 
 </html>
