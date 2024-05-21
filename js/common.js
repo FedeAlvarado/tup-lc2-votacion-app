@@ -59,6 +59,8 @@ const coloresAgrupacionesPoliticas = {
         colorPleno: 'rgb(128, 128, 128)',
         colorLiviano: 'rgb(128, 128, 128, 0.5)'
     }
+
+
 };
 
 //Seleccionamos los elementos del DOM
@@ -337,7 +339,8 @@ const filtrar = async () => {
         var mapaProvincia = document.getElementById("mapaProvincia")
         mapaProvincia.innerHTML = mapas[distritoId]
 
-        
+        const informe_button = document.getElementById("informe-button")
+        informe_button.style.display = "block"
         cambioHTML(data)
         
         // process data...
@@ -350,10 +353,13 @@ var cantElectores
 var cantMesas
 function limpiar(){
     añoSelect.value = "Año";
-    cargoSelect.value = "Seleccione un cargo";
+    cargoSelect.innerHTML = ""
+    cargoSelect.innerHTML = "Seleccione un cargo";
+    distritoSelect.innerHTML = "         ";
     distritoSelect.value = "Seleccione un distrito";
+    seccionSelect.innerHTML = "         ";
     seccionSelect.value = "Seleccione una sección";
-    hdSeccionProvincial.value = "";
+    hdSeccionProvincial.value = "         ";
     titulo.innerHTML = "Elecciones | ";
     path.innerHTML = "Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR";
     path.style.color = "yellow";
@@ -362,6 +368,8 @@ function limpiar(){
     participacion = "0%"
     cantElectores ="0"
     cantMesas = "0"
+    const informe_button = document.getElementById("informe-button")
+    informe_button.style.display = "none"
 }
 
 
@@ -461,13 +469,14 @@ function agregarInforme(){
     var vNombreAgrupaciones = []
     var vVotosAgrupaciones = []
     var vporcentajesAgrupaciones = []
+    var vDistritoId = distritoSelect.value;
 
     data.valoresTotalizadosPositivos.forEach((agrupacion) => {
         vNombreAgrupaciones.push(agrupacion.nombreAgrupacion);
         vVotosAgrupaciones.push(agrupacion.votos);
         vporcentajesAgrupaciones.push(agrupacion.votosPorcentaje);
     })
-    var values = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistritoId, vSeccionProvincialId, vSeccionId, vMesasEscrutadas, vParticipacion, vCantElectores, vNombreAgrupaciones, vVotosAgrupaciones, vporcentajesAgrupaciones]
+    var values = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistritoId, vSeccionProvincialId, vSeccionId, vMesasEscrutadas,  vCantElectores, vParticipacion, vNombreAgrupaciones, vVotosAgrupaciones, vporcentajesAgrupaciones, vDistritoId]
     var key = "INFORMES"
 
     console.log(values)
