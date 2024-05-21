@@ -1,5 +1,3 @@
-// Rest of the code...
-
 const mapas = {
     1: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M182 61L179 56L176 58L178 56L176 53L173 55L169 47L168 48L164 45L157 43L158 41L155 41L154 36L149 32L148 33L143 29L142 30L145 32L140 29L138 32L137 30L140 29L139 26L137 28L136 23L133 22L130 27L103 41L81 99L82 134L131 179L159 140L168 137L171 139L174 138L181 141L186 137L195 136L200 130L207 125L205 120L210 118L210 112L205 107L210 110L213 114L215 113L215 110L217 110L218 112L219 111L217 109L221 111L224 109L220 106L222 106L221 102L218 102L216 104L215 103L217 102L212 102L220 101L219 95L216 92L214 86L208 81L200 83L199 80L201 79L202 81L200 77L206 75L203 75L203 73L206 73L201 71L205 70L199 69L198 68L202 68L200 66L195 67L194 66L198 65L188 62L192 62L190 60L183 59L189 64L187 65z"></path></svg>',
     2: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M171 55L163 53L150 45L147 50L143 49L133 60L114 60L114 151L116 151L120 155L122 156L126 153L128 149L124 145L126 143L126 138L128 138L129 133L126 129L126 122L134 126L139 126L169 119L179 114L189 97L190 89L189 87L186 87L182 82L185 75L181 69L171 63L170 64L170 58z"></path></svg>',
@@ -69,9 +67,9 @@ const cargoSelect = document.getElementById("cargoSelect");
 const distritoSelect = document.getElementById("distritoSelect");
 const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
 
-const defaultOption = document.createElement("option");
-    defaultOption.value = false;
-    defaultOption.text = "Seleccione un cargo";
+// const defaultOption = document.createElement("option");
+//     defaultOption.value = false;
+//     defaultOption.text = "Seleccione un cargo";
 
 //Funciones
 
@@ -100,7 +98,7 @@ const buscarPeriodos = async () => {
         console.log("Error al buscar los periodos");
         console.log(error);
     }
-    
+   
     }
 
 //CARGAMOS LOS AÑOS AUTOMATICAMENTE    
@@ -130,9 +128,11 @@ añoSelect.addEventListener("change",async () => {
         cartelAmarillo.style.display = "none";
         cartelVerde.style.display = "none";
     }
-    
+    limpiarSeccion()
+    limpiarDistrito()
+    limpiarCargos()
     const datos = await buscarDatos(añoSelect.value);
-    
+   
     // Guardar los datos filtrados en una variable
     cargos = await filtrarCargos(datos);
     if(cargos)
@@ -156,11 +156,16 @@ const filtrarCargos = async (datos) => {
         return dataCargos;
     }
 }
-
-const cambiarCargos = async (cargos) => {
+function limpiarCargos(){
     cargoSelect.innerHTML = ""; // Eliminamos todos los option anteriores
-    
-    cargoSelect.add(defaultOption);
+    console.log(cargoSelect)
+    let defaultOption = document.createElement("option");
+    defaultOption.value = false;
+    defaultOption.text = "Seleccione un cargo";
+    cargoSelect.add(defaultOption)
+    console.log(cargoSelect)
+}
+const cambiarCargos = async (cargos) => {
     cargos.forEach((cargo) => {
         const option = document.createElement("option");
         option.value = cargo.IdCargo;
@@ -175,6 +180,7 @@ var cargoSeleccionado
 cargoSelect.addEventListener("change", async () => {
     const cargoId = cargoSelect.value;
     console.log(cargoId)
+    limpiarSeccion()
     if(cargoSelect.value >= 0){
         cargoSeleccionado = dataCargos.find((cargo) => {
             if(cargo.IdCargo == cargoId){
@@ -182,7 +188,7 @@ cargoSelect.addEventListener("change", async () => {
             }
         })
         console.log(cargoSeleccionado)
-        
+       
         cambiarDistritos(cargoSeleccionado.Distritos)
     }else{
         cambiarDistritos(false)
@@ -193,9 +199,16 @@ cargoSelect.addEventListener("change", async () => {
 
 // COMBO DISTRITO --------------------------------------------
 
+function limpiarDistrito(){
+    distritoSelect.innerHTML = ""
+    let defaultOption = document.createElement("option");
+    defaultOption.value = false;
+    defaultOption.text = "Seleccione un distrito";
+    distritoSelect.add(defaultOption); // Eliminamos todos los option anteriores
+}
 
 const cambiarDistritos = async (distritos) => {
-    distritoSelect.innerHTML = "Seleccione un distrito"; // Eliminamos todos los option anteriores
+    limpiarDistrito()
     if(distritos){
         distritos.forEach((distrito) => {
             const option = document.createElement("option");
@@ -206,7 +219,7 @@ const cambiarDistritos = async (distritos) => {
     }else{
         distritoSelect.add(defaultOption); // Agregamos el option por defecto
     }
-    
+   
 }
 
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL DISTRITO
@@ -214,7 +227,9 @@ var distritoSeleccionado
 
 distritoSelect.addEventListener("change", async () => {
     const distritoId = distritoSelect.value;
-    seccionSelect.innerHTML = "Seleccione una sección";
+   
+    // seccionSelect.innerHTML = defaultOption;
+    console.log(seccionSelect)
     if(distritoId >= 0){
         distritoSeleccionado = cargoSeleccionado.Distritos.find((distrito) => {
             if(distrito.IdDistrito == distritoId){
@@ -223,18 +238,24 @@ distritoSelect.addEventListener("change", async () => {
         })
     }
     buscarSecciones();
-    
-    
+   
+   
     console.log(distritoSeleccionado)
-    
+   
 })
 
 
 // COMBO SECCION --------------------------------------------
 
-
+function limpiarSeccion(){
+    let defaultOption = document.createElement("option");
+    seccionSelect.innerHTML = ""
+    defaultOption.value = false;
+    defaultOption.text = "Seleccione una sección";
+    seccionSelect.add(defaultOption);
+}
 const buscarSecciones = async () => {
-    seccionSelect.innerHTML = "Seleccione una sección";
+    limpiarSeccion()
     const cargo = dataCargos.find((c) => {
         if(c.IdCargo == cargoSelect.value){
             return c
@@ -257,8 +278,8 @@ const buscarSecciones = async () => {
                 });
             });
         }else{
-            console.log("HOLA")
-            seccionSelect.add(defaultOption);
+            console.log("Buscar elecciones no entro al if")
+            return
         }
     }
 }
@@ -298,7 +319,7 @@ const validateFields = () => {
 // FILTER FUNCTION
 var titulo = document.getElementById("titulo")
 var path = document.getElementById("path")
-var data = [] 
+var data = []
 const filtrar = async () => {
     try {
         if (!validateFields()) {
@@ -330,7 +351,7 @@ const filtrar = async () => {
             nombreEleccion = "GENERALES"
         }
         path.innerHTML = añoSelect.value + " > " + nombreEleccion + " > " + cargoSeleccionado.Cargo.toUpperCase() + " > " + distritoSeleccionado.Distrito.toUpperCase() + " > " + seccionSelect.options[seccionSelect.selectedIndex].text.toUpperCase()
-        
+       
 
         //CAMBIO PROVINCIA
         var tituloProvincia = document.getElementById("tituloProvincia")
@@ -342,7 +363,7 @@ const filtrar = async () => {
         const informe_button = document.getElementById("informe-button")
         informe_button.style.display = "block"
         cambioHTML(data)
-        
+       
         // process data...
     } catch (error) {
         console.error(error);
@@ -353,23 +374,24 @@ var cantElectores
 var cantMesas
 function limpiar(){
     añoSelect.value = "Año";
-    cargoSelect.innerHTML = ""
-    cargoSelect.innerHTML = "Seleccione un cargo";
-    distritoSelect.innerHTML = "         ";
-    distritoSelect.value = "Seleccione un distrito";
-    seccionSelect.innerHTML = "         ";
-    seccionSelect.value = "Seleccione una sección";
+    limpiarCargos()
+    limpiarDistrito()
+    limpiarSeccion()
     hdSeccionProvincial.value = "         ";
     titulo.innerHTML = "Elecciones | ";
     path.innerHTML = "Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR";
     path.style.color = "yellow";
     tituloProvincia.textContent = ""
     mapaProvincia.innerHTML = ""
-    participacion = "0%"
-    cantElectores ="0"
-    cantMesas = "0"
+    participacion.textContent = "0%"
+    cantElectores.textContent ="0"
+    cantMesas.textContent = "0"
     const informe_button = document.getElementById("informe-button")
     informe_button.style.display = "none"
+    const contenedorBarras = document.getElementById("barras")
+    contenedorBarras.innerHTML = ""
+    const contenedorBarrasVerticales = document.getElementById("grid");
+    contenedorBarrasVerticales.innerHTML = ""
 }
 
 
@@ -424,11 +446,11 @@ function cambioHTML(data){
                         </div>
                     </div>
                 </div>`;
-                
-            
+               
+           
         }
     })
-    
+   
     contenedorBarras.innerHTML = html;
 
     //Grafico de barras
@@ -515,5 +537,4 @@ function agregarInforme(){
 var buttonInforme = document.getElementById("informe-button")
 
 buttonInforme.addEventListener("click", agregarInforme)
-
 

@@ -222,7 +222,7 @@ div p {
   flex-direction: column;
   padding: 5px;
   flex-grow: 1;
-  width: 30%;
+  width: 50%;
 }
 
 .agrupaciones-container h3 {
@@ -291,7 +291,7 @@ div p {
   height: 100%;
   display: flex;
   align-items: center;
-  transition: width 0.25s;
+  transition: width 0.25s; 
   border-radius: 5px;
 }
 
@@ -367,23 +367,23 @@ div p {
 }
 
 /* LAS VARIABLES PARA DARLE ESTILO A LAS BARRAS NO EXISTEN!!, POR ESO NO SE VEN COMO DEBERIAN */
-.chart-wrap .bar {
+  .chart-wrap .bar {
   width: var(--bar-value);
-  height: var(--bar-thickness);
-  margin: var(--bar-spacing) 0;
-  background-color: var(--celeste);
+ height: var(--bar-thickness);
+   /* margin: var(--bar-spacing) 0; */
+   background-color: var(--celeste);
   border-radius: 0 var(--bar-rounded) var(--bar-rounded) 0;
-  margin: 10px 0;
-}
+  /* margin: 10px 0;  */
+}  
 
 .chart-wrap .bar:hover {
   opacity: 0.7;
-}
+} 
 
-.chart-wrap .bar::after {
+  .chart-wrap .bar::after {
   content: attr(data-name);
   margin-left: 100%;
   padding: 10px;
   display: inline-block;
   white-space: nowrap;
-}
+}     
