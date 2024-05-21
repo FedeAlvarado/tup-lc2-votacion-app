@@ -1,3 +1,5 @@
+// Rest of the code...
+
 const mapas = {
     1: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M182 61L179 56L176 58L178 56L176 53L173 55L169 47L168 48L164 45L157 43L158 41L155 41L154 36L149 32L148 33L143 29L142 30L145 32L140 29L138 32L137 30L140 29L139 26L137 28L136 23L133 22L130 27L103 41L81 99L82 134L131 179L159 140L168 137L171 139L174 138L181 141L186 137L195 136L200 130L207 125L205 120L210 118L210 112L205 107L210 110L213 114L215 113L215 110L217 110L218 112L219 111L217 109L221 111L224 109L220 106L222 106L221 102L218 102L216 104L215 103L217 102L212 102L220 101L219 95L216 92L214 86L208 81L200 83L199 80L201 79L202 81L200 77L206 75L203 75L203 73L206 73L201 71L205 70L199 69L198 68L202 68L200 66L195 67L194 66L198 65L188 62L192 62L190 60L183 59L189 64L187 65z"></path></svg>',
     2: '<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M171 55L163 53L150 45L147 50L143 49L133 60L114 60L114 151L116 151L120 155L122 156L126 153L128 149L124 145L126 143L126 138L128 138L129 133L126 129L126 122L134 126L139 126L169 119L179 114L189 97L190 89L189 87L186 87L182 82L185 75L181 69L171 63L170 64L170 58z"></path></svg>',
@@ -39,15 +41,38 @@ if(url.substring(url.lastIndexOf("/") + 1) == "paso.html"){
 }else if(url.substring(url.lastIndexOf("/") + 1) == "generales.html"){
     tipoEleccion = 2;
 }
+
+const coloresAgrupacionesPoliticas = {
+    "134": {
+        colorLiviano: 'rgba(0, 169, 232, 0.3)',
+        colorPleno: 'rgb(0, 169, 232);'
+    },
+    "135": {
+        colorPleno: 'rgb(112, 76, 159)',
+        colorLiviano: 'rgba(112, 76, 159, 0.5)'
+    },
+    "132": {
+        colorPleno: 'rgb(252, 210, 0)',
+        colorLiviano: 'rgba(252, 210, 0, 0.3)'
+    },
+    "gris": {
+        colorPleno: 'rgb(128, 128, 128)',
+        colorLiviano: 'rgb(128, 128, 128, 0.5)'
+    }
+};
+
 //Seleccionamos los elementos del DOM
 const añoSelect = document.getElementById("añoSelect");
 const cargoSelect = document.getElementById("cargoSelect");
 const distritoSelect = document.getElementById("distritoSelect");
 const hdSeccionProvincial = document.getElementById("hdSeccionProvincial");
+
 const defaultOption = document.createElement("option");
     defaultOption.value = false;
     defaultOption.text = "Seleccione un cargo";
+
 //Funciones
+
 const agregarOpciones =async (elemento, func) =>{
     const datos = await func;
     console.log(datos);
@@ -58,7 +83,9 @@ const agregarOpciones =async (elemento, func) =>{
         option.text = dato;
         elemento.add(option);
     });
+
 }
+
 //Funcion para buscar los periodos
 const buscarPeriodos = async () => {
     try {
@@ -73,8 +100,11 @@ const buscarPeriodos = async () => {
     }
     
     }
+
 //CARGAMOS LOS AÑOS AUTOMATICAMENTE    
 agregarOpciones(añoSelect, buscarPeriodos())
+
+
 const buscarDatos = async (periodoSelect) =>{
     if(periodoSelect && periodoSelect != "Año"){
         try {
@@ -98,15 +128,16 @@ añoSelect.addEventListener("change",async () => {
         cartelAmarillo.style.display = "none";
         cartelVerde.style.display = "none";
     }
-
+    
     const datos = await buscarDatos(añoSelect.value);
-
+    
     // Guardar los datos filtrados en una variable
     cargos = await filtrarCargos(datos);
     if(cargos)
         cambiarCargos(cargos);
     }    
 )
+
 //COMBO CARGOS ---------------------------------------------
 var dataCargos
 const filtrarCargos = async (datos) => {
@@ -123,6 +154,7 @@ const filtrarCargos = async (datos) => {
         return dataCargos;
     }
 }
+
 const cambiarCargos = async (cargos) => {
     cargoSelect.innerHTML = ""; // Eliminamos todos los option anteriores
     
@@ -134,6 +166,7 @@ const cambiarCargos = async (cargos) => {
         cargoSelect.add(option);
     });
 }
+
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL CARGO
 var cargoSeleccionado
 
@@ -153,7 +186,12 @@ cargoSelect.addEventListener("change", async () => {
         cambiarDistritos(false)
     }
 })
+
+
+
 // COMBO DISTRITO --------------------------------------------
+
+
 const cambiarDistritos = async (distritos) => {
     distritoSelect.innerHTML = "Seleccione un distrito"; // Eliminamos todos los option anteriores
     if(distritos){
@@ -168,6 +206,7 @@ const cambiarDistritos = async (distritos) => {
     }
     
 }
+
 //FUNCION QUE SE EJECUTA CUANDO SE CAMBIA EL DISTRITO
 var distritoSeleccionado
 
@@ -187,7 +226,11 @@ distritoSelect.addEventListener("change", async () => {
     console.log(distritoSeleccionado)
     
 })
+
+
 // COMBO SECCION --------------------------------------------
+
+
 const buscarSecciones = async () => {
     seccionSelect.innerHTML = "Seleccione una sección";
     const cargo = dataCargos.find((c) => {
@@ -218,6 +261,8 @@ const buscarSecciones = async () => {
     }
 }
 // ...
+
+
 // VALIDATION FUNCTION
 const validateFields = () => {
     let isValid = true;
@@ -227,6 +272,7 @@ const validateFields = () => {
         { element: distritoSelect, name: "Distrito" },
         { element: seccionSelect, name: "Sección" },
     ];
+
     fields.forEach((field) => {
         if (!field.element.value || field.element.value === "Seleccione un distrito" || field.element.value === "Seleccione una sección" || field.element.value === "Seleccione un cargo" || field.element.value === "Año") {
             isValid = false;
@@ -243,6 +289,7 @@ const validateFields = () => {
             }
         }
     });
+
     return isValid;
 };
 
@@ -263,6 +310,7 @@ const filtrar = async () => {
         const seccionId = seccionSelect.value;
         const circuitoId = "";
         const mesaId = "";
+
         const url = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${anioEleccion}&tipoRecuento=${tipoRecuento}&tipoEleccion=${tipoEleccion}&categoriaId=${categoriaId}&distritoId=${distritoId}&seccionProvincialId=${seccionProvincialId}&seccionId=${seccionId}&circuitoId=${circuitoId}&mesaId=${mesaId}`;
         console.log(url);
 
@@ -280,7 +328,7 @@ const filtrar = async () => {
             nombreEleccion = "GENERALES"
         }
         path.innerHTML = añoSelect.value + " > " + nombreEleccion + " > " + cargoSeleccionado.Cargo.toUpperCase() + " > " + distritoSeleccionado.Distrito.toUpperCase() + " > " + seccionSelect.options[seccionSelect.selectedIndex].text.toUpperCase()
-
+        
 
         //CAMBIO PROVINCIA
         var tituloProvincia = document.getElementById("tituloProvincia")
@@ -289,9 +337,9 @@ const filtrar = async () => {
         var mapaProvincia = document.getElementById("mapaProvincia")
         mapaProvincia.innerHTML = mapas[distritoId]
 
-
+        
         cambioHTML(data)
-
+        
         // process data...
     } catch (error) {
         console.error(error);
@@ -322,7 +370,7 @@ function limpiar(){
 function cambioHTML(data){
     //CAMBIO CANT VOTOS
 
-    var {estadoRecuento} = data
+    var {estadoRecuento, valoresTotalizadosPositivos} = data
     console.log(estadoRecuento)
 
     cantMesas = document.getElementById("cantMesasEscrutadas")
@@ -333,6 +381,60 @@ function cambioHTML(data){
 
     participacion = document.getElementById("participacion")
     participacion.textContent = estadoRecuento.participacionPorcentaje + "%"
+
+
+    //CARGADO DE BARRAS
+    const contenedorBarras = document.getElementById("barras")
+    contenedorBarras.innerHTML = ""
+    let html = ""
+
+    valoresTotalizadosPositivos.forEach((agrupacion)=>{
+        console.log(agrupacion.idAgrupacion)
+        if(coloresAgrupacionesPoliticas.hasOwnProperty(agrupacion.idAgrupacion)){
+            html += `
+                <div class="progress-container">
+                    <div class="progress-titulo">
+                        <h4>${agrupacion.nombreAgrupacion}</h4>
+                        <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
+                    </div>
+                    <div class="progress" style="background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorLiviano};">
+                        <div class="progress-bar" style="width: ${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas[agrupacion.idAgrupacion].colorPleno};">
+                            <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                        </div>
+                    </div>
+                </div>`;
+            } else {
+                html += `
+                <div class="progress-container">
+                    <div class="progress-titulo">
+                        <h4>${agrupacion.nombreAgrupacion}</h4>
+                        <p>${agrupacion.votosPorcentaje}%<br>${agrupacion.votos}Votos</p>
+                    </div>
+                    <div class="progress" style="background: ${coloresAgrupacionesPoliticas["gris"].colorLiviano};">
+                        <div class="progress-bar" style="width:${agrupacion.votosPorcentaje}%; background: ${coloresAgrupacionesPoliticas["gris"].colorPleno};">
+                            <span class="progress-bar-text">${agrupacion.votosPorcentaje}%</span>
+                        </div>
+                    </div>
+                </div>`;
+                
+            
+        }
+    })
+    
+    contenedorBarras.innerHTML = html;
+
+    //Grafico de barras
+    const contenedorBarrasVerticales = document.getElementById("grid");
+    contenedorBarrasVerticales.innerHTML = ""
+    html = "";
+    valoresTotalizadosPositivos.forEach((valor)=>{
+        if (coloresAgrupacionesPoliticas.hasOwnProperty(valor.idAgrupacion)) {
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas[valor.idAgrupacion].colorPleno}; --bar-value:${valor.votosPorcentaje}%;" data-name="${valor.nombreAgrupacion}" title="${valor.nombreAgrupacion}85%"></div>`;
+        } else {
+            html += `<div class="bar" style="background: ${coloresAgrupacionesPoliticas["gris"].colorPleno}; --bar-value:${valor.votosPorcentaje}%;" data-name="${valor.nombreAgrupacion}" title="${valor.nombreAgrupacion}85%"></div>`;
+        };
+        contenedorBarrasVerticales.innerHTML = html;
+    })
 }
 
 
@@ -404,3 +506,5 @@ function agregarInforme(){
 var buttonInforme = document.getElementById("informe-button")
 
 buttonInforme.addEventListener("click", agregarInforme)
+
+

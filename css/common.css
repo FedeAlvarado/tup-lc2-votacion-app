@@ -33,6 +33,17 @@
   --mensaje-usuario-verde: #28a745;
   --mensaje-usuario-rojo: #dc3545;
 }
+:root {
+  --graficaamarillo: rgb(230, 195, 40);
+  --grafica-amarillo: rgb(235, 235, 96);
+  --chart-width: 260px;
+  --grid-color: #aaa;
+  --bar-thickness: 25px;
+  --bar-rounded: 3px;
+  --bar-spacing: 10px;
+  --bar-color: rgba(0, 0, 255, 0.492);
+}
+
 
 
 * {
@@ -141,4 +152,46 @@ footer a{
   text-decoration: none;
   color: var(--texto-footer);
   margin-right: 0;
+}
+
+
+/*Barra de progreso style*/
+
+.progress-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-titulo h4{
+  font-size: 12px;
+}
+
+.progress-titulo h5{
+  font-size: 12px;
+}
+
+.progress-container h4{
+  font-size: 12px;
+}
+
+.progress {
+  height: 20px;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.progress-bar-text {
+  margin-left: 10px;
+  font-weight: bold;
+  color: var(--textos);
+  font-size: 9px;
 }
